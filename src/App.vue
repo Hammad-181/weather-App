@@ -1,7 +1,12 @@
 <template>
   <div id="app" :class="typeof weather.main != 'undefined' && weather.main.temp > 20 ? 'warm' : '' ">
     <main>
-      <div class="search-box">
+      <div class="container">
+        <div class="section">
+          Search with a city name
+        </div>
+
+         <div class="search-box">
         <input type="text"  
         class="search-bar"
         placeholder="Search..."
@@ -9,18 +14,20 @@
         @keypress="fetchWeather"
         />
       </div>
-      <div class="weather-wrap" v-if="typeof weather.main != 'undefined'">
-        <div class="location-box">
-          <div class="location">{{weather.name}},{{weather.sys.country}}</div>
-          <div class="date">Saturday, 19th March 2022</div>
-        </div>
+          <div class="weather-wrap" v-if="typeof weather.main != 'undefined'">
+            <div class="location-box">
+              <div class="location">{{weather.name}},{{weather.sys.country}}</div>
+              <div class="date">Saturday, 19th March 2022</div>
+            </div>
 
-      <div class="weather-box">
-        <div class="temp">{{Math.trunc(weather.main.temp)}}°C</div>
-        <div class="weather">{{weather.weather[0].main}}</div>
+           <div class="weather-box">
+            <div class="temp">{{Math.trunc(weather.main.temp)}}°C</div>
+            <div class="weather">{{weather.weather[0].main}}</div>
+           </div>
+          </div>
+    
       </div>
-      </div>
-    </main>
+         </main>
   </div>
 </template>
 
@@ -33,6 +40,7 @@ export default {
       urlBase: "https://api.openweathermap.org/data/2.5/",
       query: "",
       weather : {},
+      error: '',
     }
     
   },
@@ -40,8 +48,7 @@ export default {
     fetchWeather(e){
       if(e.key === "Enter"){
         fetch(`${this.urlBase}weather?q=${this.query}&units=metric&APPID=${this.apiKey}`)
-        .then(res => {console.log(res)
-         return res.json()}).then(this.setResults)
+        .then(res => res.json()).then(this.setResults)
       }
     },
     setResults(results){
@@ -139,5 +146,14 @@ main{
 
   text-shadow: 3px 6px rgba(0, 0 ,0, 0.25);
   
+}
+.section{
+  padding: 15px;
+  margin-bottom: 10px;
+  font-size: 50px;
+  text-align:center;
+  font-style: italic;
+  color:aliceblue;
+  text-shadow: 3px 6px rgba(0, 0 ,0, 0.3);
 }
 </style>
